@@ -15,4 +15,4 @@ if __name__ == '__main__':
                          source_path='Resources',
                          reuse_data=True,
                          dimensions=(50, 50))
-    agent.display_prediction('' '
+    agent.display_prediction('' ')
