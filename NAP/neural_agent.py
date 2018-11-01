@@ -225,7 +225,7 @@ class Neural_Agent(Data_Preprocessor):
             return
         try:
             img = load_img(file_path, target_size=self.shape)
-        except FileNotFoundError:
+        except (FileNotFoundError, OSError):
             return
         arr_img = img_to_array(img)
         arr_img = arr_img.reshape((1,) + arr_img.shape)

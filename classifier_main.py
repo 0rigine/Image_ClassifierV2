@@ -9,10 +9,11 @@ from NAP import Neural_Agent
 
 # ---- Script ----
 if __name__ == '__main__':
-    agent = Neural_Agent(loops=2,
+    agent = Neural_Agent(instance_save_path='google_classifier',
+                         loops=5,
                          data_per_file=150.,
                          data_per_batch=70.,
-                         source_path='Resources',
+                         source_path='Resources/Google',
                          reuse_data=True,
-                         dimensions=(50, 50))
+                         dimensions=(150, 150))
     agent.display_prediction('')
