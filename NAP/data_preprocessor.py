@@ -125,7 +125,7 @@ class Data_Preprocessor:
                             data = np.append(data, t_data, axis=0)
                         else:
                             data = np.array(t_data)
-                        # split data to get batch as great size
+                        # generate data to get batch as great size
                         for batch in datagen.flow(t_data, batch_size=1):
                             # memory security
                             if sys.getsizeof(np.array(data)) >= self.data_per_file:
