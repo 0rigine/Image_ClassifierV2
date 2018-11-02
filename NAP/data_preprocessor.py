@@ -113,11 +113,15 @@ class Data_Preprocessor:
         if os.path.isdir(cat_path):
             sources = os.listdir(cat_path)  # list of image files
             data = []
+            img_index = 0
+            img_total = len(sources)
             for t_path in sources:
+                img_index += 1
                 # course of source raw files
                 t_path = os.path.join(cat_path, t_path)
                 if os.path.isfile(t_path):  # security
                     raw = self.extract_from_raw(t_path)  # try to extract raw data from file
+                    print('{} -> Image {} / {}'.format(cat_name, img_index, img_total))
                     if raw is not None:  # in case of no error is raised (image corrupted, not found)
                         t_data = self.preprocess_data(raw)  # try to prepocess raw data
                         maxi = 0
@@ -129,7 +133,7 @@ class Data_Preprocessor:
                         for batch in datagen.flow(t_data, batch_size=1):
                             # memory security
                             if sys.getsizeof(np.array(data)) >= self.data_per_file:
-                                self.save_data(np.array(data), cat_name, overwrite)
+                                self.save_data(np.array(data), cat_name, overwrite)  # save data in file
                                 data = []  # emtpy data batch after save
                             if len(data) > 0:
                                 data = np.append(data, batch, axis=0)
