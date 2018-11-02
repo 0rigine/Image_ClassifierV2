@@ -8,9 +8,9 @@
 from NAP.data_preprocessor import Data_Preprocessor
 import keras.backend as K
 from keras.preprocessing.image import load_img, img_to_array
-from keras.applications import VGG19, ResNet50
+from keras.applications import ResNet50
 from keras.models import Sequential, Model, model_from_json
-from keras.layers import Dense, Flatten, Dropout
+from keras.layers import Dense, Flatten, Dropout, Conv2D, MaxPooling2D
 from keras.callbacks import ModelCheckpoint
 import pickle
 import os
@@ -110,9 +110,9 @@ class Neural_Agent(Data_Preprocessor):
         :rtype: keras.models.Model
         """""
         model = Sequential(name="neural_net")
-        model.add(Flatten(input_shape=input_shape))
-        model.add(Dense(64, activation='relu'))
-        model.add(Dropout(0.05))
+        model.add(Conv2D(16, (3, 3), activation='relu', input_shape=input_shape))
+        model.add(MaxPooling2D())
+        model.add(Flatten())
         model.add(Dense(64, activation='relu'))
         model.add(Dropout(0.05))
         model.add(Dense(32, activation='relu'))

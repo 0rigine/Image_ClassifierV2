@@ -47,7 +47,7 @@ class Data_Preprocessor:
         self.display_categories()
 
         # --- DATA MINING ---
-        if not os.path.exists(self.data_dir) or kwargs.get('reuse_data') is None:
+        if not os.path.exists(self.data_dir) or len(os.listdir(self.data_dir)) == 0 or kwargs.get('reuse_data') is None:
             print('Mining data from raw files...')
             if not os.path.exists(self.data_dir):
                 os.mkdir(self.data_dir)
@@ -111,29 +111,30 @@ class Data_Preprocessor:
         )
 
         if os.path.isdir(cat_path):
-            sources = os.listdir(cat_path)
+            sources = os.listdir(cat_path)  # list of image files
             data = []
             for t_path in sources:
                 # course of source raw files
                 t_path = os.path.join(cat_path, t_path)
                 if os.path.isfile(t_path):  # security
                     raw = self.extract_from_raw(t_path)  # try to extract raw data from file
-                    if raw is not None:
+                    if raw is not None:  # in case of error is raised (image corrupted, not found)
                         t_data = self.preprocess_data(raw)  # try to prepocess raw data
-                        if t_data is not None:
-                            maxi = 0
-                            # split data to get batch as great size
-                            for batch in datagen.flow(t_data, batch_size=1):
-                                if len(data) > 0:
-                                    data = np.append(data, batch, axis=0)
-                                else:
-                                    data = np.array(batch)
-                                if sys.getsizeof(np.array(data)) >= self.data_per_file:
-                                    self.save_data(np.array(data), cat_name, overwrite)
-                                    data = []  # emtpy data batch after save
-                                maxi += 1
-                                if maxi > self.datagen_loops:
-                                    break
+                        maxi = 0
+                        if len(data) > 0:
+                            data = np.append(data, t_data, axis=0)
+                        else:
+                            data = np.array(t_data)
+                        # split data to get batch as great size
+                        for batch in datagen.flow(t_data, batch_size=1):
+                            data = np.append(data, batch, axis=0)
+                            # memory security
+                            if sys.getsizeof(np.array(data)) >= self.data_per_file:
+                                self.save_data(np.array(data), cat_name, overwrite)
+                                data = []  # emtpy data batch after save
+                            maxi += 1
+                            if maxi > self.datagen_loops:
+                                break
             if len(data) > 0:
                 self.save_data(np.array(data), cat_name, overwrite)
 
