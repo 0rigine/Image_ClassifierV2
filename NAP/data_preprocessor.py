@@ -118,7 +118,7 @@ class Data_Preprocessor:
                 t_path = os.path.join(cat_path, t_path)
                 if os.path.isfile(t_path):  # security
                     raw = self.extract_from_raw(t_path)  # try to extract raw data from file
-                    if raw is not None:  # in case of error is raised (image corrupted, not found)
+                    if raw is not None:  # in case of no error is raised (image corrupted, not found)
                         t_data = self.preprocess_data(raw)  # try to prepocess raw data
                         maxi = 0
                         if len(data) > 0:
@@ -127,11 +127,14 @@ class Data_Preprocessor:
                             data = np.array(t_data)
                         # split data to get batch as great size
                         for batch in datagen.flow(t_data, batch_size=1):
-                            data = np.append(data, batch, axis=0)
                             # memory security
                             if sys.getsizeof(np.array(data)) >= self.data_per_file:
                                 self.save_data(np.array(data), cat_name, overwrite)
                                 data = []  # emtpy data batch after save
+                            if len(data) > 0:
+                                data = np.append(data, batch, axis=0)
+                            else:
+                                data = np.array(batch)
                             maxi += 1
                             if maxi > self.datagen_loops:
                                 break
