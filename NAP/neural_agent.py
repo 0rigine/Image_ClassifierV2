@@ -8,7 +8,7 @@
 from NAP.data_preprocessor import Data_Preprocessor
 import keras.backend as K
 from keras.preprocessing.image import load_img, img_to_array
-from keras.applications import VGG19
+from keras.applications import VGG19, ResNet50
 from keras.models import Sequential, Model, model_from_json
 from keras.layers import Dense, Flatten, Dropout
 from keras.callbacks import ModelCheckpoint
@@ -141,7 +141,7 @@ class Neural_Agent(Data_Preprocessor):
             cat[self.cat_one_time] = False
 
     def _prepare_base(self):
-        base_model = VGG19(include_top=False, weights='imagenet', input_shape=self.input_shape)
+        base_model = ResNet50(include_top=False, weights='imagenet', input_shape=self.input_shape)
         for layer in base_model.layers:
             layer.trainable = False
         return base_model
