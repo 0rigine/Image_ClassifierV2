@@ -11,8 +11,8 @@ from NAP import Neural_Agent
 if __name__ == '__main__':
     agent = Neural_Agent(instance_save_path='google_classifier',
                          loops=15,
-                         data_per_file=500.,
-                         data_per_batch=500.,
+                         data_per_file=1000.,
+                         data_per_batch=2000.,
                          source_path='Resources/Google',
                          reuse_data=True,
                          dimensions=(150, 150))
