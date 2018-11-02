@@ -91,6 +91,7 @@ class Data_Preprocessor:
     def categories_mining(self, overwrite=False):
         """ Preprocess raw data for each category """
         for cat_name, cat_dict in self.categories.items():
+            print("Mining: {0}".format(cat_name))
             self.categories_data_mining(cat_dict.get(self.cat_dir), cat_name, overwrite)
 
     def categories_data_mining(self, cat_path, cat_name, overwrite=False):
@@ -281,6 +282,7 @@ class Data_Preprocessor:
                 filename = filename.replace(match.group(), '')
             filename += str(num)
         # --- SAVING ---
+        print('Saving data in file:', filename)
         with open(filename, 'wb') as file:
             pickle.Pickler(file).dump(data)
 

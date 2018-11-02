@@ -112,9 +112,11 @@ class Neural_Agent(Data_Preprocessor):
         model = Sequential(name="neural_net")
         model.add(Flatten(input_shape=input_shape))
         model.add(Dense(64, activation='relu'))
-        model.add(Dropout(0.1))
+        model.add(Dropout(0.05))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dropout(0.05))
         model.add(Dense(32, activation='relu'))
-        model.add(Dropout(0.1))
+        model.add(Dropout(0.05))
         model.add(Dense(len(self.categories), activation='softmax'))
         model.compile(optimizer=self.optimizer, loss=self.loss, metrics=['accuracy'])
         return model
