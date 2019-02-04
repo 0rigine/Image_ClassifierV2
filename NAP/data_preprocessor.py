@@ -72,7 +72,7 @@ class Data_Preprocessor:
     @abc.abstractmethod
     def preprocess_data(self, raw_data):
         """ Preprocess data for treatment """
-        return raw_data
+        return raw_data / 255.
 
     # --- FILES CROSSING ---
     def categories_list(self, source_path):
